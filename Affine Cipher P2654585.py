@@ -21,15 +21,10 @@ def encrypt(plainText, key_a, key_b):
         #print(x,affine_output,arr_plainText[x], ord(arr_plainText[x])) #test
         encrypted_output.append(arr_alphabet[affine_output]) #create a new arrau from the chosen letters
         
-        
-        
-        
-        
-
     
     encrypted_output = "" .join(encrypted_output)
     arr_plainText_a = "" .join(arr_plainText)
-    print("Your Input was '"+ arr_plainText_a + "'")
+    print("Your Input was '"+ arr_plainText_a +"'")
     print("Your generated cipher text is: ", encrypted_output)
     main()
 
