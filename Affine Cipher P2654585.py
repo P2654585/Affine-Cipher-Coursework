@@ -20,9 +20,9 @@ def encrypt(plainText, key_a, key_b):
     length = len(arr_plainText) #length of plaintext
     for x in range (length):
         #current = arr_plainText[x] #redundant
-        affine_output = (((key_a * x) + key_b) % 26)
-        print(x,affine_output,arr_plainText[x], ord(arr_plainText[x]))
-        encrypted_output.append(arr_alphabet[affine_output])
+        affine_output = (((key_a * x) + key_b) % 26) #formula for affine cipher
+        print(x,affine_output,arr_plainText[x], ord(arr_plainText[x])) #test
+        encrypted_output.append(arr_alphabet[affine_output]) #create a new arrau from the chosen letters
         
         
         
@@ -41,8 +41,7 @@ def decrypt(cipherText, key_a, key_b):
     print("text")
 
 def main():
-    choice = 0
-
+    choice = 0 #assign
     choice = int(input("Enter Option\n1. Encrypt\n2. Decrypt\n3. Exit the Program\nChoice: "))
 
     if choice == 1:
