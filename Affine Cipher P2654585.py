@@ -58,22 +58,29 @@ def decrypt(cipherText, key_a, key_b):
 
 
 def main():
-    choice = 0 #assign
-    choice = int(input("Enter Option\n1. Encrypt\n2. Decrypt\n3. Exit the Program\nChoice: "))
+    while True: #loop program
+        try: #try input
 
-    if choice == 1:
-        plainText=str(input("Enter plaintext: "))
-        key_a = int(input("Enter key_a: "))
-        key_b = int(input("Enter key_b: "))
-        encrypt(plainText, key_a, key_b)
-    elif choice == 2:
-        cipherText=str(input("Enter ciphertext: "))
-        key_a = int(input("Enter key_a: "))
-        key_b = int(input("Enter key_b: "))
-        decrypt(cipherText, key_a, key_b)
-    elif choice == 3:
-        print("exit")
-        quit()
+            choice = 0 #assign
+            choice = int(input("Enter Option\n1. Encrypt\n2. Decrypt\n3. Exit the Program\nChoice: "))
+
+            if choice == 1:
+                plainText=str(input("Enter plaintext: "))
+                key_a = int(input("Enter key_a: "))
+                key_b = int(input("Enter key_b: "))
+                encrypt(plainText, key_a, key_b)
+            elif choice == 2:
+                cipherText=str(input("Enter ciphertext: "))
+                key_a = int(input("Enter key_a: "))
+                key_b = int(input("Enter key_b: "))
+                decrypt(cipherText, key_a, key_b)
+            elif choice == 3:
+                print("Exiting the program...")
+                quit()
+        except ValueError: #Error handle if not in range
+            print("Error, you did not select one of the displayed choices, try again!")
+        else:
+            break
 
 main()
     
