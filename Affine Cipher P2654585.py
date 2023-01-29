@@ -1,4 +1,10 @@
 #Affine Cipher P2654585
+
+#1.take plaintext -> convert to uppercase
+#2. take keys, key a and key b.
+#3. use formula y = a * x + b
+#4. output to user.
+
 import string
 
 #y = a * x + b (mod 26)
@@ -7,8 +13,8 @@ def encrypt(plainText, key_a, key_b):
     
     
     print("text")
-    arr_alphabet = list(string.ascii_uppercase)`
-    print(arr_alphabet)#26 chars
+    arr_alphabet = list(string.ascii_uppercase) # ['a', 'b', 'c'...]
+    print(arr_alphabet) #26 chars
     arr_plainText = list(map(lambda x: x.upper(),plainText)) #separated & converted to upper#
     length = len(arr_plainText)
     for x in range (length):
