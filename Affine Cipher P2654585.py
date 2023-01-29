@@ -6,6 +6,7 @@
 #4. output to user.
 
 import string
+import contextlib
 
 #y = a * x + b (mod 26)
 
@@ -17,7 +18,7 @@ def encrypt(plainText, key_a, key_b):
     length_plainText = len(arr_plainText) #length of plaintext
     
     for x in range (length_plainText):
-        y=arr_alphabet.index(arr_plainText[x])
+        y=arr_alphabet.index(arr_plainText[x]) # searching for the index of given character
         affine_output = (((key_a * y) + key_b) % 26) #formula for affine cipher
         print(x,affine_output,arr_plainText[x], ord(arr_plainText[x])) #test
         encrypted_output.append(arr_alphabet[affine_output]) #create a new arrau from the chosen letters
@@ -29,22 +30,29 @@ def encrypt(plainText, key_a, key_b):
     main() #call menu
 
 def decrypt(cipherText, key_a, key_b):
-    print("text")
-    decrypted_output=[]
-    arr_alphabet= list(string.ascii_uppercase)
-    arr_cipherText = list(map(lambda x: x.upper(),cipherText))
-    length_cipherText = len(arr_cipherText)
-    multiplicitive_Inverse = pow(key_a, -1, 261)
-    for x in range(length_cipherText):
-        affine_output = ((multiplicitive_Inverse*(x-key_b)) % 26)
-        print(x,affine_output,arr_cipherText[x], ord(arr_cipherText[x]))
-        decrypted_output.append(arr_alphabet[affine_output])
+    try:
+        decrypted_output=[]
+        arr_alphabet= list(string.ascii_uppercase)
+        arr_cipherText = list(map(lambda x: x.upper(),cipherText))
         
-    arr_cipherText_raw = "".join(arr_cipherText)
-    decrypted_output = "".join(decrypted_output)
-    print("Your ciphertext was '"+ arr_cipherText_raw+"'")
-    print("Your decrypted output is '" + decrypted_output +"'")
-    main()
+        length_cipherText = len(arr_cipherText)
+        multiplicitive_Inverse = pow(key_a, -1, 26)
+        for x in range(length_cipherText):
+            y=arr_alphabet.index(arr_cipherText[x])
+            affine_output = ((multiplicitive_Inverse*(y-key_b)) % 26)
+            print(x,affine_output,arr_cipherText[x], ord(arr_cipherText[x]))
+            decrypted_output.append(arr_alphabet[affine_output])
+            
+        arr_cipherText_raw = "".join(arr_cipherText)
+        decrypted_output = "".join(decrypted_output)
+        print("Your ciphertext was '"+ arr_cipherText_raw+"'")
+        print("Your decrypted output is '" + decrypted_output +"'")
+        main()
+    except:
+        print("Error, Unable to decrypt correctly!") #suppression error handling
+        main()
+
+
 
 
 
@@ -65,9 +73,7 @@ def main():
         decrypt(cipherText, key_a, key_b)
     elif choice == 3:
         print("exit")
-        exit()
-
-
+        quit()
 
 main()
     
