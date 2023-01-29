@@ -12,7 +12,8 @@ import string
 def encrypt(plainText, key_a, key_b):
     
     
-    print("text")
+    print("text")#
+    encrypted_output=[]
     arr_alphabet = list(string.ascii_uppercase) # ['a', 'b', 'c'...]
     print(arr_alphabet) #26 chars
     arr_plainText = list(map(lambda x: x.upper(),plainText)) #separated & converted to upper#
@@ -21,13 +22,15 @@ def encrypt(plainText, key_a, key_b):
         #current = arr_plainText[x]
         print(x,arr_plainText[x], ord(arr_plainText[x]))
         
-        affine_output = ((key_a * x) + key_b) # & 25)
+        affine_output = (((key_a * x) + key_b) % 26)
+        encrypted_output.append(arr_alphabet[affine_output])
         print(affine_output)
+        
 
     
     
     print(arr_plainText)
-    
+    print(encrypted_output)
 
 def decrypt(cipherText, key_a, key_b):
     print("text")
