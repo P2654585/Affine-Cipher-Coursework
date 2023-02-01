@@ -80,13 +80,34 @@ def decrypt(cipherText, key_a, key_b):
         print("Error, Unable to decrypt correctly! REASON: Not able to find inverse of key_a | Returning to menu... ") #error handling
         main()
 
+def bruteforce(cipherText):
+    bruteforce_output = []
+    arr_alphabet= list(string.ascii_uppercase) #create alphabet list
+    arr_cipherText = list(map(lambda x: x.upper(),cipherText)) 
+    length_cipherText = len(arr_cipherText)
+    
+
+    for i in range(length_cipherText):
+        for key_a in range(0,26):
+            multiplicative_Inverse = modinv(key_a)
+            for key_b in range(0,26):
+                y=arr_alphabet.index(arr_cipherText[i])
+                while multiplicative_Inverse != 1:
+                    affine_output = ((multiplicative_Inverse*(y-key_b)) % 26)
+    bruteforce_output = "".join(bruteforce_output)
+    print("KeyA = "+ key_a + ", KeyB= "+key_b + "text= "+ bruteforce_output)
+
+
+
+
+
 
 def main(): 
     while True:
         try: #try input
 
             choice = 0 #assign
-            choice = int(input("Enter Option\n1. Encrypt\n2. Decrypt\n3. Exit the Program\nChoice: "))
+            choice = int(input("Enter Option\n1. Encrypt\n2. Decrypt\n3. Bruteforce\n4. Exit the Program\nChoice: "))
 
             if choice == 1:
                 plainText=str(input("Enter plaintext: "))
@@ -99,6 +120,9 @@ def main():
                 key_b = int(input("Enter key_b: "))
                 decrypt(cipherText, key_a, key_b)
             elif choice == 3:
+                cipherText=str(input("Enter ciphertext: "))
+                bruteforce(cipherText)
+            elif choice == 4:
                 print("Exiting the program...")
                 quit()
         except ValueError: #Error handle if not in range
