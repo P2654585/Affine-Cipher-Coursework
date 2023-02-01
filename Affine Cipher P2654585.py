@@ -1,14 +1,40 @@
 #Affine Cipher P2654585
 
-#1.take plaintext -> convert to uppercase
+#--encrypt--
+#1. take plaintext -> convert to uppercase
 #2. take keys, key a and key b.
 #3. use formula y = a * x + b
 #4. output to user.
 
+#--decrypt--
+#1. take ciphertext -> convert to upper
+#2. uses key a and key b.
+#3. use formula y = a^-1(y-b) % 26 <- uses euclidean algoritm
+#4. output to user
+
 import string
-import contextlib
 
 #y = a * x + b (mod 26)
+
+def egcd(a, b): #Extended Euclidean Algorithm
+    x, y, u, v = 0, 1, 1, 0 
+    while a != 0:   #loop
+        q = b//a #divide b by a (// = floor) and get the quotient(q)
+        r = b%a #b mod a to get remainder(r)
+        m = x - u*q #update the values of m
+        n = y - v*q #update the values of n
+        b, a, x, y, u, v = a, r, u, v, m, n #update the values of b, a, x, y, u, v
+    
+    gcd = b #b is the GCD of a and b
+    return gcd, x, y
+
+def modinv(key_a): #modular Inverse
+  gcd, x, y = egcd(key_a, 26) 
+  if gcd != 1: 
+    return None #modular inverse does not exist 
+  else: 
+    return x % 26
+
 
 def encrypt(plainText, key_a, key_b):
     encrypted_output=[]
@@ -35,7 +61,7 @@ def decrypt(cipherText, key_a, key_b):
         arr_cipherText = list(map(lambda x: x.upper(),cipherText)) 
         
         length_cipherText = len(arr_cipherText)
-        multiplicative_Inverse = pow(key_a, -1, 26) #using pow function to get multiplicitive inverse
+        multiplicative_Inverse = modinv(key_a) #using modInv function to get multiplicitive inverse
         for x in range(length_cipherText):
             y=arr_alphabet.index(arr_cipherText[x])
             affine_output = ((multiplicative_Inverse*(y-key_b)) % 26)
@@ -48,7 +74,10 @@ def decrypt(cipherText, key_a, key_b):
         print("Your decrypted output is '" + decrypted_output + "'") #combine everything in the array without delimiter
         main()
     except ValueError:
-        print("Error, Unable to decrypt correctly! REASON: key_a is not prime | Returning to menu... ") #error handling
+        print("Error, Unable to decrypt correctly! REASON: Not able to find inverse of key_a | Returning to menu... ") #error handling
+        main()
+    except TypeError:
+        print("Error, Unable to decrypt correctly! REASON: Not able to find inverse of key_a | Returning to menu... ") #error handling
         main()
 
 
