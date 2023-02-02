@@ -15,6 +15,8 @@
 import string
 
 #y = a * x + b (mod 26)
+#------------------------------
+#credits for this section of the code: https://www.codespeedy.com/implementation-of-affine-cipher-in-python/
 
 def egcd(a, b): #Extended Euclidean Algorithm
     x, y, u, v = 0, 1, 1, 0 
@@ -28,13 +30,14 @@ def egcd(a, b): #Extended Euclidean Algorithm
     gcd = b #b is the GCD of a and b
     return gcd, x, y
 
+
 def modinv(key_a): #modular Inverse
   gcd, x, y = egcd(key_a, 26) 
   if gcd != 1: 
     return None #modular inverse does not exist 
   else: 
     return x % 26
-
+#------------------------------
 
 def encrypt(plainText, key_a, key_b):
     encrypted_output=[]
