@@ -12,6 +12,13 @@
 #3. use formula y = a^-1(y-b) % 26 <- uses euclidean algoritm
 #4. output to user
 
+#--bruteforce--
+#1. take ciphertext -> convert to upper
+#2. go throught all the combinations(12*26 = 312) ~312 tests.
+#3. will use the decrypt formula y = a^-1(y-b) % 26
+#4. output to user
+#5. rank in probabilty of correct decrypted ciphertext ? kasiski analysis?
+
 import string
 
 #y = a * x + b (mod 26)
@@ -31,7 +38,7 @@ def egcd(a, b): #Extended Euclidean Algorithm
 def modinv(key_a): #modular Inverse
   gcd, x, y = egcd(key_a, 26) 
   if gcd != 1: 
-    return None #modular inverse does not exist 
+    return 0 #modular inverse does not exist 
   else: 
     return x % 26
 
@@ -39,7 +46,7 @@ def modinv(key_a): #modular Inverse
 def encrypt(plainText, key_a, key_b):
     encrypted_output=[]
     arr_alphabet = list(string.ascii_uppercase) # ['A', 'B', 'C'...]
-    arr_plainText = list(map(lambda x: x.upper(),plainText)) #separated & converted to upper#
+    arr_plainText = list(map(lambda x: x.upper(),plainText)) #separated & converted to upper
     length_plainText = len(arr_plainText) #length of plaintext
     
     for x in range (length_plainText):
@@ -58,14 +65,14 @@ def decrypt(cipherText, key_a, key_b):
     try:
         decrypted_output=[] #create new array
         arr_alphabet= list(string.ascii_uppercase) #create alphabet list
-        arr_cipherText = list(map(lambda x: x.upper(),cipherText)) 
+        arr_cipherText = list(map(lambda x: x.upper(),cipherText)) #separated & converted to upper
         
-        length_cipherText = len(arr_cipherText)
+        length_cipherText = len(arr_cipherText) #length of ciphertext
         multiplicative_Inverse = modinv(key_a) #using modInv function to get multiplicitive inverse
         for x in range(length_cipherText):
             y=arr_alphabet.index(arr_cipherText[x])
             affine_output = ((multiplicative_Inverse*(y-key_b)) % 26)
-            #print(x,affine_output,arr_cipherText[x], ord(arr_cipherText[x])) #used for debugging
+            print(x,affine_output,arr_cipherText[x], ord(arr_cipherText[x])) #used for debugging
             decrypted_output.append(arr_alphabet[affine_output]) #
             
         arr_cipherText_raw = "".join(arr_cipherText)
@@ -80,25 +87,34 @@ def decrypt(cipherText, key_a, key_b):
         print("Error, Unable to decrypt correctly! REASON: Not able to find inverse of key_a | Returning to menu... ") #error handling
         main()
 
-def bruteforce(cipherText):
-    bruteforce_output = []
+def decrypt_return(cipherText, key_a, key_b): #created a decrypt return function, reused from 
+    decrypted_output = [] #create new array
     arr_alphabet= list(string.ascii_uppercase) #create alphabet list
-    arr_cipherText = list(map(lambda x: x.upper(),cipherText)) 
-    length_cipherText = len(arr_cipherText)
-    
+    arr_cipherText = list(map(lambda x: x.upper(),cipherText)) #separated & converted to upper
 
-    for i in range(length_cipherText):
-        for key_a in range(0,26):
-            multiplicative_Inverse = modinv(key_a)
-            for key_b in range(0,26):
-                y=arr_alphabet.index(arr_cipherText[i])
-                while multiplicative_Inverse != 1:
-                    affine_output = ((multiplicative_Inverse*(y-key_b)) % 26)
-    bruteforce_output = "".join(bruteforce_output)
-    print("KeyA = "+ key_a + ", KeyB= "+key_b + "text= "+ bruteforce_output)
+    length_cipherText = len(arr_cipherText) #length of ciphertext
+    multiplicative_Inverse = modinv(key_a) #using modInv function to get multiplicitive inverse
+    for x in range(length_cipherText):
+        y=arr_alphabet.index(arr_cipherText[x])
+        affine_output = ((multiplicative_Inverse*(y-key_b)) % 26)
+        #print(x,affine_output,arr_cipherText[x], ord(arr_cipherText[x])) #used for debugging
+        decrypted_output += arr_alphabet[affine_output]
+        decrypted_output = "".join(decrypted_output)
+        
+    return decrypted_output
+
+def bruteforce(cipherText): #There are only 12 possible values for key_A' #26 possible values for key_b
+    bruteforce_output = [] #storing bruteforced output in array
+    arr_cipherText = list(map(lambda x: x.upper(),cipherText)) #separated & converted to upper
 
 
-
+    for key_a in range(26):
+        multiplicative_Inverse = modinv(key_a)
+        for key_b in range(26):
+            if multiplicative_Inverse != 0: #if the inverse is 1 then progress to next instruction
+                brute = decrypt_return(cipherText,key_a,key_b)
+                print("key_A = '"+ str(key_a) + "' Key_b = '" + str(key_b) + "' plaintext = " + brute)
+    main()
 
 
 
