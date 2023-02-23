@@ -17,9 +17,10 @@
 #2. go throught all the combinations(12*26 = 312) ~312 tests.
 #3. will use the decrypt formula y = a^-1(y-b) % 26
 #4. output to user
-#5. rank in probabilty of correct decrypted ciphertext ? kasiski analysis?
+#5. rank in probabilty of correct decrypted ciphertext ? kasiski analysis/frequency analysis?
 
 import string
+import math
 
 #y = a * x + b (mod 26)
 
@@ -41,6 +42,32 @@ def modinv(key_a): #modular Inverse
     return 0 #modular inverse does not exist 
   else: 
     return x % 26
+
+def entropy(s):
+    # Letter Frequency Chart for English
+    freq = { 
+        'E': 0.1202, 'T': 0.091, 'A': 0.0812, 'O': 0.0768, 'I': 0.0731,
+        'N': 0.0695, 'S': 0.0628, 'R': 0.0602, 'H': 0.0592, 'D': 0.0432, 
+        'L': 0.0398, 'U': 0.0288, 'C': .0271, 'M': 0.0261, 'F': 0.023, 
+        'Y': 0.0211, 'W': 0.0209, 'G': 0.0203, 'P': 0.0182, 'B': 0.0149, 
+        'V': 0.0111, 'K': 0.0069, 'X': 0.0017, 'Q': 0.0011, 'J': 0.001, 
+        'Z': 0.0007 
+    }
+    ascii_range = (65, 90)
+
+    # Ensure the string's case matches the dictionary keys
+    s = s.upper()
+
+    # Using the frequency of a letter as p(x), calculate entropy of the string using the formula:
+    # H = [sum of (-log[p(x)]_2)] / len(s)
+    total_entropy = 0
+    for c in s:
+        if(ord(c) >= ascii_range[0] and ord(c) <= ascii_range[1]): # Only compute for values of A-Z
+            total_entropy += -math.log(freq[c], 2)
+
+    total_entropy = total_entropy / len(s)
+
+    return total_entropy
 
 
 def encrypt(plainText, key_a, key_b):
@@ -104,16 +131,34 @@ def decrypt_return(cipherText, key_a, key_b): #created a decrypt return function
     return decrypted_output
 
 def bruteforce(cipherText): #There are only 12 possible values for key_A' #26 possible values for key_b
-    bruteforce_output = [] #storing bruteforced output in array
+    bruteforce_output = {} #initialise dictionary to store ciphertext with key
     arr_cipherText = list(map(lambda x: x.upper(),cipherText)) #separated & converted to upper
-
+    
 
     for key_a in range(26):
         multiplicative_Inverse = modinv(key_a)
         for key_b in range(26):
             if multiplicative_Inverse != 0: #if the inverse is 1 then progress to next instruction
                 brute = decrypt_return(cipherText,key_a,key_b)
-                print("key_A = '"+ str(key_a) + "' Key_b = '" + str(key_b) + "' plaintext = " + brute)
+                print("key_A = '"+ str(key_a) + "' Key_b = '" + str(key_b) + "' plaintext = " + brute + " Frequency Analysis: " + str(entropy(brute)))
+                bruteforce_output[brute,'key_a:'+str(key_a), 'key_b:'+str(key_b)] = entropy(brute)#ciphertext with entropy key
+    
+    sorted_bruteforce_output= sorted(bruteforce_output.items(), key=lambda x:x[1]) #sort items in dict in accending order
+
+    print("\nThe dictionary keys and values with newline:")
+    for key, value in sorted_bruteforce_output:
+        print("{} : {}".format(key, value))
+
+    #print(list(sorted_bruteforce_output)[0:5])
+
+    #print((list(sorted_bruteforce_output))[:5])
+
+    
+
+        
+
+
+    #print(bruteforce_output)
     main()
 
 
