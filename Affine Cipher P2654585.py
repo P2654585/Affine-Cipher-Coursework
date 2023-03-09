@@ -22,7 +22,6 @@
 import string
 import math
 
-#y = a * x + b (mod 26)
 
 def egcd(a, b): #Extended Euclidean Algorithm
     x, y, u, v = 0, 1, 1, 0 
@@ -66,7 +65,6 @@ def frequency_analysis(s): #another word for entropy
     total_frequency = total_frequency / len(s)
 
     return total_frequency #we only need to return the calculated value
-
 
 def encrypt(plainText, key_a, key_b):
     encrypted_output=[]
@@ -197,7 +195,6 @@ def main():
             print("Error, you did not select one of the displayed choices, try again!")
         else:
             main()
-
 
 if __name__ == "__main__":
     main() #runs the program
