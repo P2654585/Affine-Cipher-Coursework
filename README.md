@@ -10,4 +10,7 @@ This program allows for the following
 
 The implementation is fully complete.
 
-Code has been written from scratch.
+credits:
+Extended Euclidean Algorithm and modular inverse - https://www.codespeedy.com/implementation-of-affine-cipher-in-python/
+frequency analysis: https://math.stackexchange.com/questions/3315693/using-entropy-to-determine-if-a-sentence-is-likely-to-be-valid-english
+everything else was developed from scratch.
