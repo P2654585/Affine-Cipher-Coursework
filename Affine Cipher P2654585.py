@@ -1,4 +1,5 @@
-#Affine Cipher Coursework
+#Affine Cipher Coursework Group 20 
+
 
 #--encrypt--
 #1. take plaintext -> convert to uppercase
