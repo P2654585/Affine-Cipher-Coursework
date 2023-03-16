@@ -1,4 +1,4 @@
-#Affine Cipher P2654585
+#Affine Cipher Coursework
 
 #--encrypt--
 #1. take plaintext -> convert to uppercase
